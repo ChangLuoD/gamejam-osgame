@@ -1,0 +1,176 @@
+[gd_scene format=3 uid="uid://uarvgnbrcltm"]
+
+[ext_resource type="Script" uid="uid://dbbbq1hcbhmi2" path="res://addons/dialogic/Modules/Choice/settings_choices.gd" id="2"]
+[ext_resource type="PackedScene" uid="uid://dbpkta2tjsqim" path="res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn" id="2_nxutt"]
+
+[node name="Choices" type="VBoxContainer" unique_id=1110690899]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -227.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2")
+
+[node name="VBoxContainer2" type="HBoxContainer" parent="." unique_id=1815560045]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="VBoxContainer2" unique_id=968953157]
+layout_mode = 2
+theme_type_variation = &"DialogicSettingsSection"
+text = "行为"
+
+[node name="VBoxContainer" type="GridContainer" parent="." unique_id=363320059]
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 2
+
+[node name="AutofocusLabel" type="HBoxContainer" parent="VBoxContainer" unique_id=1430949013]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/AutofocusLabel" unique_id=137760784]
+layout_mode = 2
+text = "自动聚焦第一个选项"
+
+[node name="Autofocus" type="CheckBox" parent="VBoxContainer" unique_id=1236680247]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="UseInputActionLabel" type="HBoxContainer" parent="VBoxContainer" unique_id=611678444]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/UseInputActionLabel" unique_id=1324857631]
+layout_mode = 2
+text = "使用输入动作"
+
+[node name="UseInputAction" type="CheckBox" parent="VBoxContainer" unique_id=1322911819]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="AppearModeLabel" type="HBoxContainer" parent="VBoxContainer" unique_id=1241605978]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="VBoxContainer/AppearModeLabel" unique_id=1255455561]
+layout_mode = 2
+text = "选项出现"
+
+[node name="HintTooltip" parent="VBoxContainer/AppearModeLabel" unique_id=1020709258 instance=ExtResource("2_nxutt")]
+layout_mode = 2
+tooltip_text = "选项可以在文本结束后立即出现，也可以在延迟后、点击后或两者之一后出现。"
+texture = null
+hint_text = "选项可以在文本结束后立即出现，也可以在延迟后、点击后或两者之一后出现。"
+
+[node name="RevealDelayLabel" type="HBoxContainer" parent="VBoxContainer" unique_id=1262970218]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="AppearMode" type="OptionButton" parent="VBoxContainer/RevealDelayLabel" unique_id=823811974]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+selected = 0
+fit_to_longest_item = false
+item_count = 4
+popup/item_0/text = "立即"
+popup/item_0/id = 0
+popup/item_1/text = "延迟后"
+popup/item_1/id = 1
+popup/item_2/text = "再次点击后"
+popup/item_2/id = 2
+popup/item_3/text = "延迟或点击后"
+popup/item_3/id = 3
+
+[node name="RevealDelay" type="SpinBox" parent="VBoxContainer/RevealDelayLabel" unique_id=222883807]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "选项出现前的延迟（秒）。"
+step = 0.01
+
+[node name="DelayLabel" type="HBoxContainer" parent="VBoxContainer" unique_id=1074245772]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="VBoxContainer/DelayLabel" unique_id=1043015527]
+layout_mode = 2
+text = "选项可被按下前的延迟"
+
+[node name="HintTooltip2" parent="VBoxContainer/DelayLabel" unique_id=2142436562 instance=ExtResource("2_nxutt")]
+layout_mode = 2
+tooltip_text = "在选项可被激活前添加一小段延迟，可以防止误选。"
+texture = null
+hint_text = "在选项可被激活前添加一小段延迟，可以防止误选。"
+
+[node name="Delay" type="SpinBox" parent="VBoxContainer" unique_id=1857692415]
+unique_name_in_owner = true
+layout_mode = 2
+step = 0.01
+
+[node name="DefaultFalseBehaviourLabel" type="HBoxContainer" parent="VBoxContainer" unique_id=204759349]
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="VBoxContainer/DefaultFalseBehaviourLabel" unique_id=381420907]
+layout_mode = 2
+text = "条件不满足的选项的默认行为"
+
+[node name="HintTooltip3" parent="VBoxContainer/DefaultFalseBehaviourLabel" unique_id=347250132 instance=ExtResource("2_nxutt")]
+layout_mode = 2
+tooltip_text = "为条件不满足的选项定义默认行为（隐藏或禁用）。
+
+每个选项都可以单独覆盖此设置。"
+texture = null
+hint_text = "为条件不满足的选项定义默认行为（隐藏或禁用）。
+
+每个选项都可以单独覆盖此设置。"
+
+[node name="FalseBehaviour" type="OptionButton" parent="VBoxContainer" unique_id=152346251]
+unique_name_in_owner = true
+layout_mode = 2
+selected = 0
+item_count = 2
+popup/item_0/text = "隐藏"
+popup/item_0/id = 0
+popup/item_1/text = "禁用"
+popup/item_1/id = 1
+
+[node name="HSeparator" type="HSeparator" parent="." unique_id=2106277893]
+layout_mode = 2
+
+[node name="HotkeySelection" type="HBoxContainer" parent="." unique_id=1808102293]
+layout_mode = 2
+
+[node name="Title2" type="Label" parent="HotkeySelection" unique_id=403474596]
+layout_mode = 2
+theme_type_variation = &"DialogicSettingsSection"
+text = "选项快捷键"
+
+[node name="HintTooltip4" parent="HotkeySelection" unique_id=1508107578 instance=ExtResource("2_nxutt")]
+layout_mode = 2
+tooltip_text = "你可以编辑布局场景中的选项按钮，来添加更复杂的快捷键（或单独的快捷键）。"
+texture = null
+hint_text = "你可以编辑布局场景中的选项按钮，来添加更复杂的快捷键（或单独的快捷键）。"
+
+[node name="VBoxContainer3" type="HBoxContainer" parent="." unique_id=491107799]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label4" type="Label" parent="VBoxContainer3" unique_id=1877652202]
+layout_mode = 2
+text = "快捷键类型"
+
+[node name="HotkeyType" type="OptionButton" parent="VBoxContainer3" unique_id=751017840]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+selected = 0
+item_count = 2
+popup/item_0/text = "无快捷键"
+popup/item_0/id = 0
+popup/item_1/text = "默认（1-9）"
+popup/item_1/id = 1
+
+[connection signal="toggled" from="VBoxContainer/Autofocus" to="." method="_on_Autofocus_toggled"]
+[connection signal="toggled" from="VBoxContainer/UseInputAction" to="." method="_on_UseInputAction_toggled"]
+[connection signal="item_selected" from="VBoxContainer/RevealDelayLabel/AppearMode" to="." method="_on_appear_mode_item_selected"]
+[connection signal="value_changed" from="VBoxContainer/RevealDelayLabel/RevealDelay" to="." method="_on_reveal_delay_value_changed"]
+[connection signal="value_changed" from="VBoxContainer/Delay" to="." method="_on_Delay_value_changed"]
+[connection signal="item_selected" from="VBoxContainer/FalseBehaviour" to="." method="_on_FalseBehaviour_item_selected"]
+[connection signal="item_selected" from="VBoxContainer3/HotkeyType" to="." method="_on_HotkeyType_item_selected"]

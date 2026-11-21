@@ -1,0 +1,131 @@
+[gd_scene format=3 uid="uid://cd340w7blofak"]
+
+[ext_resource type="Script" uid="uid://bxgl1awhvasa1" path="res://addons/dialogic/Modules/Save/settings_save.gd" id="2"]
+[ext_resource type="PackedScene" uid="uid://dbpkta2tjsqim" path="res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn" id="2_v2wt8"]
+
+[node name="Saving" type="VBoxContainer" unique_id=1165747495]
+offset_right = 1084.0
+offset_bottom = 212.0
+script = ExtResource("2")
+
+[node name="Grid" type="GridContainer" parent="." unique_id=1194717140]
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Grid" unique_id=1878632953]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Grid/HBoxContainer" unique_id=933807704]
+layout_mode = 2
+text = "自动保存"
+
+[node name="HintTooltip" parent="Grid/HBoxContainer" unique_id=589327050 instance=ExtResource("2_v2wt8")]
+layout_mode = 2
+tooltip_text = "启用后 Dialogic 会根据所选的自动保存方式，将完整状态自动保存到当前存档位。"
+texture = null
+hint_text = "启用后 Dialogic 会根据所选的自动保存方式，将完整状态自动保存到当前存档位。"
+
+[node name="Autosave" type="CheckBox" parent="Grid" unique_id=296232152]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="AutosaveModeLabel" type="HBoxContainer" parent="Grid" unique_id=2079583764]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="Grid/AutosaveModeLabel" unique_id=1356969178]
+layout_mode = 2
+text = "自动保存模式"
+
+[node name="AutosaveModeContent" type="HBoxContainer" parent="Grid" unique_id=443718244]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="AutosaveMode" type="OptionButton" parent="Grid/AutosaveModeContent" unique_id=507734290]
+unique_name_in_owner = true
+layout_mode = 2
+selected = 0
+item_count = 3
+popup/item_0/text = "时间线开始+结束+跳转"
+popup/item_0/id = 0
+popup/item_1/text = "每 X 秒"
+popup/item_1/id = 1
+popup/item_2/text = "每个文本事件"
+popup/item_2/id = 2
+
+[node name="AutosaveDelay" type="SpinBox" parent="Grid/AutosaveModeContent" unique_id=1840403247]
+unique_name_in_owner = true
+layout_mode = 2
+max_value = 1000.0
+suffix = "s"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Grid" unique_id=1647425410]
+layout_mode = 2
+
+[node name="Label4" type="Label" parent="Grid/HBoxContainer2" unique_id=1703799540]
+layout_mode = 2
+text = "默认存档位名称"
+
+[node name="HintTooltip3" parent="Grid/HBoxContainer2" unique_id=1012635965 instance=ExtResource("2_v2wt8")]
+layout_mode = 2
+tooltip_text = "默认存档位的名称。"
+texture = null
+hint_text = "默认存档位的名称。"
+
+[node name="DefaultSaveSlotName" type="LineEdit" parent="Grid" unique_id=224592272]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+expand_to_text_length = true
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="Grid" unique_id=1467247984]
+layout_mode = 2
+
+[node name="EncryptionPasswordLabel" type="Label" parent="Grid/HBoxContainer3" unique_id=651970598]
+layout_mode = 2
+text = "加密密码"
+
+[node name="HintTooltip" parent="Grid/HBoxContainer3" unique_id=1471093134 instance=ExtResource("2_v2wt8")]
+layout_mode = 2
+tooltip_text = "用于加密存档文件的密码。留空时存档文件不会被加密。"
+texture = null
+hint_text = "用于加密存档文件的密码。留空时存档文件不会被加密。"
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="Grid" unique_id=960770696]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="EncryptionPassword" type="LineEdit" parent="Grid/HBoxContainer4" unique_id=349392546]
+unique_name_in_owner = true
+layout_mode = 2
+expand_to_text_length = true
+
+[node name="EncryptionOnExportsSection" type="HBoxContainer" parent="Grid/HBoxContainer4" unique_id=1467487537]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="EncryptionPasswordLabel" type="Label" parent="Grid/HBoxContainer4/EncryptionOnExportsSection" unique_id=1854948912]
+layout_mode = 2
+text = "仅在导出后使用"
+
+[node name="HintTooltip" parent="Grid/HBoxContainer4/EncryptionOnExportsSection" unique_id=1279057206 instance=ExtResource("2_v2wt8")]
+layout_mode = 2
+tooltip_text = "为便于调试，Dialogic 只会加密导出项目生成的存档。
+开启调试模式的导出项目，以及在编辑器中游玩时生成的存档 
+都不会使用加密。"
+texture = null
+hint_text = "为便于调试，Dialogic 只会加密导出项目生成的存档。
+开启调试模式的导出项目，以及在编辑器中游玩时生成的存档 
+都不会使用加密。"
+
+[node name="EncryptionOnExports" type="CheckBox" parent="Grid/HBoxContainer4/EncryptionOnExportsSection" unique_id=1235107178]
+unique_name_in_owner = true
+layout_mode = 2
+
+[connection signal="toggled" from="Grid/Autosave" to="." method="_on_autosave_toggled"]
+[connection signal="item_selected" from="Grid/AutosaveModeContent/AutosaveMode" to="." method="_on_autosave_mode_item_selected"]
+[connection signal="value_changed" from="Grid/AutosaveModeContent/AutosaveDelay" to="." method="_on_autosave_delay_value_changed"]
+[connection signal="text_changed" from="Grid/DefaultSaveSlotName" to="." method="_on_default_save_slot_name_text_changed"]
+[connection signal="text_changed" from="Grid/HBoxContainer4/EncryptionPassword" to="." method="_on_encryption_password_text_changed"]
+[connection signal="toggled" from="Grid/HBoxContainer4/EncryptionOnExportsSection/EncryptionOnExports" to="." method="_on_encryption_on_exports_toggled"]

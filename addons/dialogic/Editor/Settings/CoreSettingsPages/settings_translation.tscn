@@ -1,0 +1,360 @@
+[gd_scene format=3 uid="uid://chpb1mj03xjxv"]
+
+[ext_resource type="Script" uid="uid://b0bm772xo8n2j" path="res://addons/dialogic/Editor/Settings/CoreSettingsPages/settings_translation.gd" id="1_dvmyi"]
+[ext_resource type="PackedScene" uid="uid://dbpkta2tjsqim" path="res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn" id="2_k2lou"]
+[ext_resource type="PackedScene" uid="uid://dpwhshre1n4t6" path="res://addons/dialogic/Editor/Events/Fields/field_options_dynamic.tscn" id="3_dq4j2"]
+[ext_resource type="PackedScene" uid="uid://7mvxuaulctcq" path="res://addons/dialogic/Editor/Events/Fields/field_file.tscn" id="4_kvsma"]
+
+[sub_resource type="DPITexture" id="DPITexture_m6kd3"]
+_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#ff5d5d\" d=\"M2 1v8.586l1.293-1.293a1 1 0 0 1 1.414 0L7 10.587l2.293-2.293a1 1 0 0 1 1.414 0L13 10.586l1-1V6H9V1H2zm8 0v4h4zm-6 9.414-2 2V15h12v-2.586l-.293.293a1 1 0 0 1-1.414 0L10 10.414l-2.293 2.293a1 1 0 0 1-1.414 0L4 10.414z\"/></svg>
+"
+
+[node name="Translations" type="VBoxContainer" unique_id=1062479855]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -101.0
+offset_bottom = 102.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_dvmyi")
+
+[node name="HBox" type="HBoxContainer" parent="." unique_id=481524821]
+layout_mode = 2
+
+[node name="Basics" type="VBoxContainer" parent="HBox" unique_id=1990652912]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Title" type="Label" parent="HBox/Basics" unique_id=1944764571]
+layout_mode = 2
+theme_type_variation = &"DialogicSettingsSection"
+text = "基础"
+
+[node name="VBox4" type="HBoxContainer" parent="HBox/Basics" unique_id=1639113645]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBox/Basics/VBox4" unique_id=2145139907]
+layout_mode = 2
+text = "启用翻译"
+
+[node name="TransEnabled" type="CheckBox" parent="HBox/Basics/VBox4" unique_id=874301021]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HSeparator5" type="VSeparator" parent="HBox" unique_id=666520126]
+layout_mode = 2
+
+[node name="Testing" type="VBoxContainer" parent="HBox" unique_id=1198305878]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Title2" type="Label" parent="HBox/Testing" unique_id=898971573]
+layout_mode = 2
+theme_type_variation = &"DialogicSettingsSection"
+text = "测试"
+
+[node name="VBox3" type="HBoxContainer" parent="HBox/Testing" unique_id=1181577247]
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="HBox/Testing/VBox3" unique_id=2099507201]
+layout_mode = 2
+text = "测试语言区域"
+
+[node name="HintTooltip8" parent="HBox/Testing/VBox3" unique_id=932657335 instance=ExtResource("2_k2lou")]
+layout_mode = 2
+tooltip_text = "修改此语言区域即可用另一种语言测试你的游戏（仅在编辑器内）。
+等同于项目设置里的测试用语言区域设置。 "
+texture = null
+hint_text = "修改此语言区域即可用另一种语言测试你的游戏（仅在编辑器内）。
+等同于项目设置里的测试用语言区域设置。
+
+通过 \"收集翻译\" 更新下拉列表。"
+
+[node name="TestingLocale" parent="HBox/Testing/VBox3" unique_id=1237852971 instance=ExtResource("3_dq4j2")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HSeparator4" type="HSeparator" parent="." unique_id=1730235239]
+layout_mode = 2
+
+[node name="TranslationSettings" type="HBoxContainer" parent="." unique_id=808559395]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TranslationSettings" unique_id=780581174]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SettingsTitle" type="Label" parent="TranslationSettings/VBoxContainer" unique_id=835108402]
+layout_mode = 2
+theme_type_variation = &"DialogicSettingsSection"
+text = "设置"
+
+[node name="Grid" type="GridContainer" parent="TranslationSettings/VBoxContainer" unique_id=501096686]
+layout_mode = 2
+columns = 2
+
+[node name="VBox" type="HBoxContainer" parent="TranslationSettings/VBoxContainer/Grid" unique_id=89943942]
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="TranslationSettings/VBoxContainer/Grid/VBox" unique_id=230824838]
+layout_mode = 2
+text = "默认语言区域"
+
+[node name="HintTooltip" parent="TranslationSettings/VBoxContainer/Grid/VBox" unique_id=1601026825 instance=ExtResource("2_k2lou")]
+layout_mode = 2
+tooltip_text = "你的时间线所用语言的区域。"
+texture = null
+hint_text = "你的时间线所用语言的区域。"
+
+[node name="OrigLocale" parent="TranslationSettings/VBoxContainer/Grid" unique_id=836822758 instance=ExtResource("3_dq4j2")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="TransFile" type="HBoxContainer" parent="TranslationSettings/VBoxContainer/Grid" unique_id=1582080769]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TranslationSettings/VBoxContainer/Grid/TransFile" unique_id=286625445]
+layout_mode = 2
+text = "翻译文件夹"
+
+[node name="HintTooltip3" parent="TranslationSettings/VBoxContainer/Grid/TransFile" unique_id=131568163 instance=ExtResource("2_k2lou")]
+layout_mode = 2
+tooltip_text = "选择一个文件夹，让 Dialogic 把 CSV 文件保存到其中。
+保存到 \"翻译文件夹内\" 时也会用到它"
+texture = null
+hint_text = "选择一个文件夹，让 Dialogic 把 CSV 文件保存到其中。
+保存到 \"翻译文件夹内\" 时也会用到它"
+
+[node name="TransFolderPicker" parent="TranslationSettings/VBoxContainer/Grid" unique_id=1280095142 instance=ExtResource("4_kvsma")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+file_mode = 2
+
+[node name="VBox2" type="HBoxContainer" parent="TranslationSettings/VBoxContainer/Grid" unique_id=2078397028]
+layout_mode = 2
+
+[node name="OutputModeLabel" type="Label" parent="TranslationSettings/VBoxContainer/Grid/VBox2" unique_id=1431556987]
+layout_mode = 2
+text = "输出模式"
+
+[node name="OutputModeTooltip" parent="TranslationSettings/VBoxContainer/Grid/VBox2" unique_id=1226526686 instance=ExtResource("2_k2lou")]
+layout_mode = 2
+tooltip_text = "决定要创建多少个 CSV 文件。
+
+• \"按类型\"：每种资源类型各用一个 CSV 文件：时间线、角色和术语表。
+例如，10 条时间线会合并到 1 个 CSV 文件中。
+
+• \"按文件\"：每个资源文件各用一个 CSV 文件。
+例如，10 条时间线会产生 10 个 CSV 文件。
+
+\"按文件\" 选项会使用 \"输出位置\"，而 \"按类型\" 则始终使用翻译文件夹。"
+texture = null
+hint_text = "决定要创建多少个 CSV 文件。
+
+• \"按类型\"：每种资源类型各用一个 CSV 文件：时间线、角色和术语表。
+例如，10 条时间线会合并到 1 个 CSV 文件中。
+
+• \"按文件\"：每个资源文件各用一个 CSV 文件。
+例如，10 条时间线会产生 10 个 CSV 文件。
+
+\"按文件\" 选项会使用 \"输出位置\"，而 \"按类型\" 则始终使用翻译文件夹。"
+
+[node name="TransMode" type="OptionButton" parent="TranslationSettings/VBoxContainer/Grid" unique_id=1420691710]
+unique_name_in_owner = true
+layout_mode = 2
+selected = 0
+item_count = 2
+popup/item_0/text = "按类型"
+popup/item_0/id = 0
+popup/item_1/text = "按文件"
+popup/item_1/id = 1
+
+[node name="OutputLocation" type="HBoxContainer" parent="TranslationSettings/VBoxContainer/Grid" unique_id=1460943288]
+layout_mode = 2
+
+[node name="OutputLocationLabel" type="Label" parent="TranslationSettings/VBoxContainer/Grid/OutputLocation" unique_id=570644935]
+layout_mode = 2
+text = "输出位置"
+
+[node name="OutputLocationTooltip" parent="TranslationSettings/VBoxContainer/Grid/OutputLocation" unique_id=1112076699 instance=ExtResource("2_k2lou")]
+layout_mode = 2
+tooltip_text = "决定把生成的 CSV 文件保存到哪里。
+
+• \"翻译文件夹内\"：使用 \"翻译文件夹\"。
+
+• \"文件旁\"：放到该资源类型所在的文件夹里。
+
+该按钮需要 \"按文件\" 输出模式。
+资源类型可以是：时间线、角色和术语表。"
+texture = null
+hint_text = "决定把生成的 CSV 文件保存到哪里。
+
+• \"翻译文件夹内\"：使用 \"翻译文件夹\"。
+
+• \"文件旁\"：放到该资源类型所在的文件夹里。
+
+该按钮需要 \"按文件\" 输出模式。
+资源类型可以是：时间线、角色和术语表。"
+
+[node name="SaveLocationMode" type="OptionButton" parent="TranslationSettings/VBoxContainer/Grid" unique_id=1737889354]
+unique_name_in_owner = true
+layout_mode = 2
+disabled = true
+selected = 0
+item_count = 2
+popup/item_0/text = "翻译文件夹内"
+popup/item_0/id = 0
+popup/item_1/text = "文件旁"
+popup/item_1/id = 1
+
+[node name="Control" type="Control" parent="TranslationSettings/VBoxContainer/Grid" unique_id=693535962]
+visible = false
+layout_mode = 2
+
+[node name="AddSeparatorHBox" type="HBoxContainer" parent="TranslationSettings/VBoxContainer/Grid" unique_id=1832628742]
+layout_mode = 2
+
+[node name="AddSeparatorLabel" type="Label" parent="TranslationSettings/VBoxContainer/Grid/AddSeparatorHBox" unique_id=610815132]
+layout_mode = 2
+text = "添加分隔行"
+
+[node name="HintAddSeparatorEnabled" parent="TranslationSettings/VBoxContainer/Grid/AddSeparatorHBox" unique_id=1469147986 instance=ExtResource("2_k2lou")]
+layout_mode = 2
+tooltip_text = "在按项目的 CSV 中加入空行，以便区分不同的区块。
+
+例如，当新的术语表条目或时间线开始时，就会添加一个空行。"
+texture = null
+hint_text = "在按项目的 CSV 中加入空行，以便区分不同的区块。
+
+例如，当新的术语表条目或时间线开始时，就会添加一个空行。"
+
+[node name="AddSeparatorEnabled" type="CheckBox" parent="TranslationSettings/VBoxContainer/Grid" unique_id=1354496401]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HSeparator6" type="VSeparator" parent="TranslationSettings" unique_id=424662945]
+layout_mode = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="TranslationSettings" unique_id=398991278]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TranslationSettings/VBoxContainer2" unique_id=939069443]
+layout_mode = 2
+
+[node name="Title3" type="Label" parent="TranslationSettings/VBoxContainer2/HBoxContainer" unique_id=1956432582]
+layout_mode = 2
+theme_type_variation = &"DialogicSettingsSection"
+text = "操作"
+
+[node name="Actions" type="GridContainer" parent="TranslationSettings/VBoxContainer2" unique_id=1023526540]
+layout_mode = 2
+columns = 2
+
+[node name="UpdateCsvFiles" type="Button" parent="TranslationSettings/VBoxContainer2/Actions" unique_id=533244438]
+unique_name_in_owner = true
+layout_mode = 2
+disabled = true
+text = "更新 CSV 文件"
+icon = SubResource("DPITexture_m6kd3")
+
+[node name="HintTooltip5" parent="TranslationSettings/VBoxContainer2/Actions" unique_id=225087869 instance=ExtResource("2_k2lou")]
+layout_mode = 2
+tooltip_text = "该按钮会扫描所有时间线，并生成或更新它们的 CSV 文件。
+
+Dialogic 的 CSV 文件会以 \"dialogic_\" 为前缀。
+
+如果 \"翻译文件夹\" 不存在或路径无效，该操作会被禁用。"
+texture = null
+hint_text = "该按钮会扫描所有时间线，并生成或更新它们的 CSV 文件。
+
+Dialogic 的 CSV 文件会以 \"dialogic_\" 为前缀。
+
+如果 \"翻译文件夹\" 不存在或路径无效，该操作会被禁用。"
+
+[node name="CollectTranslations" type="Button" parent="TranslationSettings/VBoxContainer2/Actions" unique_id=573366275]
+unique_name_in_owner = true
+layout_mode = 2
+text = "收集翻译"
+icon = SubResource("DPITexture_m6kd3")
+
+[node name="HintTooltip6" parent="TranslationSettings/VBoxContainer2/Actions" unique_id=465036712 instance=ExtResource("2_k2lou")]
+layout_mode = 2
+tooltip_text = "Godot 会把 CSV 文件导入为 \".translation\" 文件。
+该按钮会把它们添加到 \"项目设置 -> 本地化\" 中。
+"
+texture = null
+hint_text = "Godot 会把 CSV 文件导入为 \".translation\" 文件。
+该按钮会把它们添加到 \"项目设置 -> 本地化\" 中。
+"
+
+[node name="AspectRatioContainer2" type="AspectRatioContainer" parent="TranslationSettings/VBoxContainer2/Actions" unique_id=84001380]
+custom_minimum_size = Vector2(0, 31)
+layout_mode = 2
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="TranslationSettings/VBoxContainer2/Actions" unique_id=1458240773]
+custom_minimum_size = Vector2(0, 31)
+layout_mode = 2
+
+[node name="TransRemove" type="Button" parent="TranslationSettings/VBoxContainer2/Actions" unique_id=1424076053]
+unique_name_in_owner = true
+layout_mode = 2
+text = "移除翻译"
+icon = SubResource("DPITexture_m6kd3")
+
+[node name="HintTooltip7" parent="TranslationSettings/VBoxContainer2/Actions" unique_id=958058260 instance=ExtResource("2_k2lou")]
+layout_mode = 2
+tooltip_text = "使用这个按钮时千万小心！
+
+它会尝试删除所有与 Dialogic 相关的 \".csv\" 与 \".translation\" 文件。
+以 \"dialogic_\" 为前缀的 CSV 与翻译文件会被视作 Dialogic 相关文件。
+
+还会从时间线与角色中移除翻译 ID（例如 #id:33）。"
+texture = null
+hint_text = "使用这个按钮时千万小心！
+
+它会尝试删除所有与 Dialogic 相关的 \".csv\" 与 \".translation\" 文件。
+以 \"dialogic_\" 为前缀的 CSV 与翻译文件会被视作 Dialogic 相关文件。
+
+还会从时间线与角色中移除翻译 ID（例如 #id:33）。"
+
+[node name="StatusMessage" type="Label" parent="TranslationSettings/VBoxContainer2" unique_id=1767883703]
+unique_name_in_owner = true
+layout_mode = 2
+text = "⛔ 需要有效的翻译文件夹才能翻译角色名以及项目 CSV 文件。"
+autowrap_mode = 3
+
+[node name="UpdateConfirmationDialog" type="ConfirmationDialog" parent="." unique_id=886801483]
+unique_name_in_owner = true
+title = "请做决定…"
+size = Vector2i(490, 200)
+ok_button_text = "删除旧的并生成新的"
+dialog_text = "你之前用不同的翻译设置生成过 CSV 与翻译文件！
+
+请考虑删除旧的 CSV，然后重新生成新的改动。"
+dialog_autowrap = true
+
+[node name="EraseConfirmationDialog" type="ConfirmationDialog" parent="." unique_id=1540093280]
+unique_name_in_owner = true
+position = Vector2i(0, 36)
+size = Vector2i(500, 280)
+min_size = Vector2i(300, 70)
+ok_button_text = "全部删除"
+dialog_text = "你即将：
+-   删除所有以 \"dialogic_\" 为前缀的 CSV。
+-   删除相关的 CSV 导入文件。
+-   删除相关的翻译文件。
+-   从时间线与角色中移除翻译 ID。
+-   从 \"项目设置 -> 本地化\" 中移除所有以 \"dialogic\" 为前缀的翻译。
+-   移除以 \"Glossary/\" 开头的 \"_translation_keys\" 与 \"entries\"。"
+dialog_autowrap = true
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="." unique_id=1586432210]
+custom_minimum_size = Vector2(0, 31)
+layout_mode = 2
+
+[connection signal="confirmed" from="UpdateConfirmationDialog" to="." method="_delete_and_update"]
+[connection signal="confirmed" from="EraseConfirmationDialog" to="." method="erase_translations"]

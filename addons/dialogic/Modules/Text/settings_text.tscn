@@ -1,0 +1,489 @@
+[gd_scene format=3 uid="uid://cf3qks3v18xmr"]
+
+[ext_resource type="Script" uid="uid://cdxck874xobqh" path="res://addons/dialogic/Modules/Text/settings_text.gd" id="2"]
+[ext_resource type="PackedScene" uid="uid://dpwhshre1n4t6" path="res://addons/dialogic/Editor/Events/Fields/field_options_dynamic.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://dbpkta2tjsqim" path="res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn" id="3_s7xhj"]
+
+[node name="DialogText" type="VBoxContainer" unique_id=821676870]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=756822742]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Title3" type="Label" parent="VBoxContainer" unique_id=435387241]
+layout_mode = 2
+theme_type_variation = &"DialogicSettingsSection"
+text = "行为"
+
+[node name="VBox" type="GridContainer" parent="VBoxContainer" unique_id=1544729404]
+layout_mode = 2
+columns = 2
+
+[node name="DefaultSpeedLabel" type="HBoxContainer" parent="VBoxContainer/VBox" unique_id=557861741]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/VBox/DefaultSpeedLabel" unique_id=979675230]
+layout_mode = 2
+text = "默认字母速度"
+
+[node name="HintTooltip2" parent="VBoxContainer/VBox/DefaultSpeedLabel" unique_id=1091143570 instance=ExtResource("3_s7xhj")]
+layout_mode = 2
+tooltip_text = "每个字符的显示速度，单位为秒。速度为 0 时会立即显示完整文本（仍会考虑暂停）。"
+texture = null
+hint_text = "每个字符的显示速度，单位为秒。速度为 0 时会立即显示完整文本（仍会考虑暂停）。"
+
+[node name="DefaultSpeed" type="SpinBox" parent="VBoxContainer/VBox" unique_id=1740007056]
+unique_name_in_owner = true
+layout_mode = 2
+step = 0.001
+
+[node name="InputActionLabel" type="HBoxContainer" parent="VBoxContainer/VBox" unique_id=1910366000]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="VBoxContainer/VBox/InputActionLabel" unique_id=744032272]
+layout_mode = 2
+text = "输入动作"
+
+[node name="HintTooltip3" parent="VBoxContainer/VBox/InputActionLabel" unique_id=1398444992 instance=ExtResource("3_s7xhj")]
+layout_mode = 2
+tooltip_text = "用于跳过文本、通常也用于前进到下一事件的动作。
+你可以在「项目设置 > 输入映射」中修改这些动作。"
+texture = null
+hint_text = "用于跳过文本、通常也用于前进到下一事件的动作。
+你可以在「项目设置 > 输入映射」中修改这些动作。"
+
+[node name="InputAction" parent="VBoxContainer/VBox" unique_id=921548532 instance=ExtResource("3")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VBox" unique_id=1096977749]
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="VBoxContainer/VBox/HBoxContainer" unique_id=253822152]
+layout_mode = 2
+text = "文本显示可跳过"
+
+[node name="HintTooltip4" parent="VBoxContainer/VBox/HBoxContainer" unique_id=912534108 instance=ExtResource("3_s7xhj")]
+layout_mode = 2
+tooltip_text = "启用后，可以用输入动作跳过文本的逐字显示。
+禁用后，只有显示完成后才能前进到下一事件。"
+texture = null
+hint_text = "启用后，可以用输入动作跳过文本的逐字显示。
+禁用后，只有显示完成后才能前进到下一事件。"
+
+[node name="Skippable" type="HBoxContainer" parent="VBoxContainer/VBox" unique_id=1940840870]
+layout_mode = 2
+
+[node name="Skippable" type="CheckBox" parent="VBoxContainer/VBox/Skippable" unique_id=925416494]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/VBox/Skippable" unique_id=629161150]
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="VBoxContainer/VBox/Skippable/HBoxContainer2" unique_id=1116236358]
+layout_mode = 2
+text = "跳过延迟："
+
+[node name="HintTooltip4" parent="VBoxContainer/VBox/Skippable/HBoxContainer2" unique_id=875159225 instance=ExtResource("3_s7xhj")]
+layout_mode = 2
+tooltip_text = "跳过前的延迟。 
+
+用它来防止用户过快跳过你的时间线。"
+texture = null
+hint_text = "跳过前的延迟。 
+
+用它来防止用户过快跳过你的时间线。"
+
+[node name="SkippableDelay" type="SpinBox" parent="VBoxContainer/VBox/Skippable/HBoxContainer2" unique_id=876453854]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+step = 0.01
+suffix = "s"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/VBox/Skippable" unique_id=103438841]
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="VBoxContainer/VBox/Skippable/HBoxContainer3" unique_id=1384589065]
+layout_mode = 2
+text = "前进延迟："
+
+[node name="HintTooltip4" parent="VBoxContainer/VBox/Skippable/HBoxContainer3" unique_id=207861836 instance=ExtResource("3_s7xhj")]
+layout_mode = 2
+tooltip_text = "前进前的延迟（如果文本会自行显示完成）。 
+
+用于防止玩家本意是跳过逐字显示、却在文本已经完整显示后才按下，从而误触发前进。"
+texture = null
+hint_text = "前进前的延迟（仅当文本会自行显示完成时）。 
+
+用于防止玩家本意是跳过逐字显示、却在文本已经完整显示后才按下，从而误触发前进。"
+
+[node name="AdvanceDelay" type="SpinBox" parent="VBoxContainer/VBox/Skippable/HBoxContainer3" unique_id=1586249913]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+step = 0.01
+suffix = "s"
+
+[node name="ColorNames" type="HBoxContainer" parent="VBoxContainer/VBox" unique_id=311901740]
+layout_mode = 2
+
+[node name="Label4" type="Label" parent="VBoxContainer/VBox/ColorNames" unique_id=1252529220]
+layout_mode = 2
+text = "自动着色角色名"
+
+[node name="HintTooltip5" parent="VBoxContainer/VBox/ColorNames" unique_id=1209101903 instance=ExtResource("3_s7xhj")]
+layout_mode = 2
+tooltip_text = "启用后，在文本事件中角色名会使用该角色的颜色显示。"
+texture = null
+hint_text = "启用后，在文本事件中角色名会使用该角色的颜色显示。"
+
+[node name="AutocolorNames" type="CheckBox" parent="VBoxContainer/VBox" unique_id=250487376]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="TextPrefixLabel" type="HBoxContainer" parent="VBoxContainer/VBox" unique_id=1368256506]
+layout_mode = 2
+
+[node name="Label4" type="Label" parent="VBoxContainer/VBox/TextPrefixLabel" unique_id=331337405]
+layout_mode = 2
+text = "文本前缀"
+
+[node name="HintTooltip5" parent="VBoxContainer/VBox/TextPrefixLabel" unique_id=1096135560 instance=ExtResource("3_s7xhj")]
+layout_mode = 2
+tooltip_text = "启用后，在文本事件中角色名会使用该角色的颜色显示。"
+texture = null
+hint_text = "它会被放在文本之前。可用于为所有文本套用 BBCode 特效。"
+
+[node name="TextPrefix" type="LineEdit" parent="VBoxContainer/VBox" unique_id=1936172614]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="BBCodeEffectLabel" type="HBoxContainer" parent="VBoxContainer/VBox" unique_id=1932905494]
+layout_mode = 2
+
+[node name="Label4" type="Label" parent="VBoxContainer/VBox/BBCodeEffectLabel" unique_id=528499532]
+layout_mode = 2
+text = "自定义 BBCode 特效"
+
+[node name="HintTooltip5" parent="VBoxContainer/VBox/BBCodeEffectLabel" unique_id=712706513 instance=ExtResource("3_s7xhj")]
+layout_mode = 2
+tooltip_text = "它会被放在文本之前。可用于为所有文本套用 BBCode 特效。"
+texture = null
+hint_text = "提供一份用逗号分隔的 BBCode 特效资源列表（路径或 uid）。"
+
+[node name="CustomBBCodeEffects" type="LineEdit" parent="VBoxContainer/VBox" unique_id=784987959]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/VBox" unique_id=283292687]
+layout_mode = 2
+
+[node name="Label5" type="Label" parent="VBoxContainer/VBox/HBoxContainer3" unique_id=1827933249]
+layout_mode = 2
+text = "将换行作为新事件"
+
+[node name="HintTooltip7" parent="VBoxContainer/VBox/HBoxContainer3" unique_id=222201122 instance=ExtResource("3_s7xhj")]
+layout_mode = 2
+tooltip_text = "启用后，Dialogic 会把换行视为 [n] 特效，
+表现为在开始新文本前似乎会等待输入。"
+texture = null
+hint_text = "启用后，Dialogic 会把换行视为 [n] 特效，
+表现为在开始新文本前似乎会等待输入。"
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer/VBox" unique_id=784196249]
+layout_mode = 2
+
+[node name="NewEvents" type="CheckBox" parent="VBoxContainer/VBox/HBoxContainer4" unique_id=1170112153]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="NewEventOption" type="OptionButton" parent="VBoxContainer/VBox/HBoxContainer4" unique_id=1747346216]
+unique_name_in_owner = true
+layout_mode = 2
+selected = 0
+fit_to_longest_item = false
+item_count = 2
+popup/item_0/text = "作为新事件"
+popup/item_0/id = 0
+popup/item_1/text = "追加"
+popup/item_1/id = 1
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer" unique_id=1798217308]
+layout_mode = 2
+
+[node name="HBoxContainer AutoAdvance" type="HBoxContainer" parent="VBoxContainer" unique_id=1217631665]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="VBoxContainer/HBoxContainer AutoAdvance" unique_id=421193728]
+layout_mode = 2
+theme_type_variation = &"DialogicSettingsSection"
+text = "自动前进"
+
+[node name="HintTooltip" parent="VBoxContainer/HBoxContainer AutoAdvance" unique_id=1217785063 instance=ExtResource("3_s7xhj")]
+layout_mode = 2
+tooltip_text = "自动前进是指在文本显示完成后自动推进到下一事件，通常是在一段延迟之后。
+
+你可以用以下任一方式在代码中启用自动前进：
+- Dialogic.Inputs.auto_advance.enabled_until_user_input = true
+- Dialogic.Inputs.auto_advance.enabled_until_next_event = true
+- Dialogic.Inputs.auto_advance.enabled_forced = true
+这些标志会累加，因此只要其中任一为 true，就会发生自动前进。
+除非禁用了手动前进，否则玩家随时可以跳过自动前进的等待时间。
+
+自动前进会等待语音播放完毕。该行为可以通过代码禁用。 "
+texture = null
+hint_text = "自动前进是指在文本显示完成后自动推进到下一事件，通常是在一段延迟之后。
+
+你可以用以下任一方式在代码中启用自动前进：
+- Dialogic.Inputs.auto_advance.enabled_until_user_input = true
+- Dialogic.Inputs.auto_advance.enabled_until_next_event = true
+- Dialogic.Inputs.auto_advance.enabled_forced = true
+这些标志会累加，因此只要其中任一为 true，就会发生自动前进。
+除非禁用了手动前进，否则玩家随时可以跳过自动前进的等待时间。
+
+自动前进会等待语音播放完毕。该行为可以通过代码禁用。 "
+
+[node name="AutoadvanceSettings" type="GridContainer" parent="VBoxContainer" unique_id=706710195]
+layout_mode = 2
+columns = 2
+
+[node name="HBox_BaseDelay2" type="HBoxContainer" parent="VBoxContainer/AutoadvanceSettings" unique_id=1964523894]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/AutoadvanceSettings/HBox_BaseDelay2" unique_id=419181411]
+layout_mode = 2
+text = "基础延迟"
+
+[node name="HintTooltip" parent="VBoxContainer/AutoadvanceSettings/HBox_BaseDelay2" unique_id=448033372 instance=ExtResource("3_s7xhj")]
+layout_mode = 2
+tooltip_text = "这是自动前进的基础延迟。"
+texture = null
+hint_text = "这是自动前进的基础延迟。"
+
+[node name="FixedDelay" type="SpinBox" parent="VBoxContainer/AutoadvanceSettings" unique_id=1073296262]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 2
+step = 0.01
+value = 1.0
+suffix = "s"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/AutoadvanceSettings" unique_id=191057099]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="VBoxContainer/AutoadvanceSettings/HBoxContainer" unique_id=584853134]
+layout_mode = 2
+text = "附加延迟"
+
+[node name="HintTooltip2" parent="VBoxContainer/AutoadvanceSettings/HBoxContainer" unique_id=404216130 instance=ExtResource("3_s7xhj")]
+layout_mode = 2
+tooltip_text = "可以额外添加每个字符或每个单词的延迟。
+
+注意：通过代码修改数值时，其实可以同时使用两种模式。"
+texture = null
+hint_text = "可以额外添加每个字符或每个单词的延迟。
+
+注意：通过代码修改数值时，其实可以同时使用两种模式。"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/AutoadvanceSettings" unique_id=2087447132]
+layout_mode = 2
+
+[node name="AdditionalDelayMode" type="OptionButton" parent="VBoxContainer/AutoadvanceSettings/HBoxContainer2" unique_id=7781014]
+unique_name_in_owner = true
+layout_mode = 2
+selected = 0
+fit_to_longest_item = false
+item_count = 3
+popup/item_0/text = "无"
+popup/item_0/id = 0
+popup/item_1/text = "每个单词"
+popup/item_1/id = 1
+popup/item_2/text = "每个字符"
+popup/item_2/id = 2
+
+[node name="AdditionalDelay" type="SpinBox" parent="VBoxContainer/AutoadvanceSettings/HBoxContainer2" unique_id=1397891983]
+unique_name_in_owner = true
+layout_mode = 2
+step = 0.001
+
+[node name="AutoadvanceIgnoreCharacters" type="HBoxContainer" parent="VBoxContainer/AutoadvanceSettings/HBoxContainer2" unique_id=161016258]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="VBoxContainer/AutoadvanceSettings/HBoxContainer2/AutoadvanceIgnoreCharacters" unique_id=1790097547]
+layout_mode = 2
+text = "忽略的字符"
+
+[node name="HintTooltip3" parent="VBoxContainer/AutoadvanceSettings/HBoxContainer2/AutoadvanceIgnoreCharacters" unique_id=16164186 instance=ExtResource("3_s7xhj")]
+layout_mode = 2
+tooltip_text = "被忽略的字符不会产生延迟，可用于排除标点与空白字符。
+
+禁用时，会使用文本的整体长度，并先剥离 BBCode 标签。
+启用时，会扫描文本并跳过匹配的字符。"
+texture = null
+hint_text = "被忽略的字符不会产生延迟，可用于排除标点与空白字符。
+
+禁用时，会使用文本的整体长度，并先剥离 BBCode 标签。
+启用时，会扫描文本并跳过匹配的字符。"
+
+[node name="IgnoredCharactersEnabled" type="CheckBox" parent="VBoxContainer/AutoadvanceSettings/HBoxContainer2/AutoadvanceIgnoreCharacters" unique_id=77777066]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="IgnoredCharacters" type="LineEdit" parent="VBoxContainer/AutoadvanceSettings/HBoxContainer2/AutoadvanceIgnoreCharacters" unique_id=1849445444]
+unique_name_in_owner = true
+layout_mode = 2
+text = "/\\\\,.( ); ?!-+\"'"
+expand_to_text_length = true
+
+[node name="HBox_BaseDelay" type="HBoxContainer" parent="VBoxContainer/AutoadvanceSettings" unique_id=881642243]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/AutoadvanceSettings/HBox_BaseDelay" unique_id=1973347983]
+layout_mode = 2
+text = "初始即启用"
+
+[node name="HintTooltip" parent="VBoxContainer/AutoadvanceSettings/HBox_BaseDelay" unique_id=35779251 instance=ExtResource("3_s7xhj")]
+layout_mode = 2
+tooltip_text = "通常你会通过代码启用自动前进，
+若此项为真，则它会在初始时就已启用。
+这类自动前进（系统）只有通过代码禁用才会停止。 "
+texture = null
+hint_text = "通常你会通过代码启用自动前进，
+若此项为真，则它会在初始时就已启用。
+这类自动前进（系统）只有通过代码禁用才会停止。 "
+
+[node name="AutoAdvance" type="CheckBox" parent="VBoxContainer/AutoadvanceSettings" unique_id=1206381828]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HSeparator2" type="HSeparator" parent="VBoxContainer" unique_id=252180886]
+layout_mode = 2
+
+[node name="HBoxContainer AutoSkip" type="HBoxContainer" parent="VBoxContainer" unique_id=1069045274]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="VBoxContainer/HBoxContainer AutoSkip" unique_id=1232601655]
+layout_mode = 2
+theme_type_variation = &"DialogicSettingsSection"
+text = "自动跳过"
+
+[node name="HintTooltip" parent="VBoxContainer/HBoxContainer AutoSkip" unique_id=193066646 instance=ExtResource("3_s7xhj")]
+layout_mode = 2
+tooltip_text = "自动跳过是指自动跳过时间线事件，直到下一个未读的文本事件或需要用户输入的事件（例如选项、等待输入和文本输入）。
+
+你可以通过代码启用自动跳过：
+Dialogic.Inputs.auto_skip.enabled = true
+
+默认情况下，自动跳过会在用户输入时取消。
+你可以调用以下代码禁用该行为：
+Dialogic.Inputs.auto_skip.disable_on_user_input = false"
+texture = null
+hint_text = "自动跳过是指自动跳过时间线事件，直到下一个未读的文本事件或需要用户输入的事件（例如选项、等待输入和文本输入）。
+
+你可以通过代码启用自动跳过：
+Dialogic.Inputs.auto_skip.enabled = true
+
+默认情况下，自动跳过会在用户输入时取消。
+你可以调用以下代码禁用该行为：
+Dialogic.Inputs.auto_skip.disable_on_user_input = false"
+
+[node name="AutoskipSettings" type="GridContainer" parent="VBoxContainer" unique_id=2133140726]
+layout_mode = 2
+columns = 2
+
+[node name="HBox_BaseDelay2" type="HBoxContainer" parent="VBoxContainer/AutoskipSettings" unique_id=1854358973]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/AutoskipSettings/HBox_BaseDelay2" unique_id=1378323006]
+layout_mode = 2
+text = "每个事件的耗时"
+
+[node name="HintTooltip" parent="VBoxContainer/AutoskipSettings/HBox_BaseDelay2" unique_id=706905264 instance=ExtResource("3_s7xhj")]
+layout_mode = 2
+tooltip_text = "自动跳过执行下一个事件所需的时间。
+
+若设为 0.1 秒，则每个事件都应在该时间内完成。
+自定义事件必须遵守该时间，内置事件已自行处理自动跳过。"
+texture = null
+hint_text = "自动跳过执行下一个事件所需的时间。
+
+若设为 0.1 秒，则每个事件都应在该时间内完成。
+自定义事件必须遵守该时间，内置事件已自行处理自动跳过。"
+
+[node name="AutoskipTimePerEvent" type="SpinBox" parent="VBoxContainer/AutoskipSettings" unique_id=996301942]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 2
+step = 0.01
+value = 0.1
+suffix = "s"
+
+[node name="HSeparator3" type="HSeparator" parent="VBoxContainer" unique_id=1265111964]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=1211432274]
+layout_mode = 2
+
+[node name="Title2" type="Label" parent="VBoxContainer/HBoxContainer" unique_id=1650640371]
+layout_mode = 2
+theme_type_variation = &"DialogicSettingsSection"
+text = "自动暂停"
+
+[node name="HintTooltip" parent="VBoxContainer/HBoxContainer" unique_id=2123814403 instance=ExtResource("3_s7xhj")]
+layout_mode = 2
+tooltip_text = "在特定字母后添加暂停。
+
+每组可以包含多个字母，它们后面会（分别）
+加上所给长度的暂停。"
+texture = null
+hint_text = "在特定字母后添加暂停。
+
+每组可以包含多个字母，它们后面会（分别）
+加上所给长度的暂停。"
+
+[node name="Add" type="Button" parent="VBoxContainer/HBoxContainer" unique_id=2040943528]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+text = "添加组"
+
+[node name="AutoPauseSets" type="GridContainer" parent="VBoxContainer" unique_id=447075676]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 3
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer" unique_id=1489708750]
+layout_mode = 2
+
+[node name="Label5" type="Label" parent="VBoxContainer/HBoxContainer3" unique_id=859788113]
+layout_mode = 2
+text = "自动暂停为绝对时间"
+
+[node name="HintTooltip7" parent="VBoxContainer/HBoxContainer3" unique_id=1748343146 instance=ExtResource("3_s7xhj")]
+layout_mode = 2
+tooltip_text = "未启用时，自动暂停时间会乘以文本速度与用户速度。启用后则忽略这两者。"
+texture = null
+hint_text = "未启用时，自动暂停时间会乘以文本速度与用户速度。启用后则忽略这两者。"
+
+[node name="AutoPausesAbsolute" type="CheckBox" parent="VBoxContainer/HBoxContainer3" unique_id=418982530]
+unique_name_in_owner = true
+layout_mode = 2
+
+[connection signal="value_changed" from="VBoxContainer/VBox/InputAction" to="." method="_on_InputAction_value_changed"]
+[connection signal="value_changed" from="VBoxContainer/VBox/Skippable/HBoxContainer3/AdvanceDelay" to="." method="_on_skippable_delay_value_changed"]
+[connection signal="item_selected" from="VBoxContainer/VBox/HBoxContainer4/NewEventOption" to="." method="_on_new_event_option_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/AutoadvanceSettings/HBoxContainer2/AdditionalDelayMode" to="." method="_on_additional_delay_mode_item_selected"]
+[connection signal="value_changed" from="VBoxContainer/AutoadvanceSettings/HBoxContainer2/AdditionalDelay" to="." method="_on_additional_delay_value_changed"]
+[connection signal="text_changed" from="VBoxContainer/AutoadvanceSettings/HBoxContainer2/AutoadvanceIgnoreCharacters/IgnoredCharacters" to="." method="_on_IgnoredCharacters_text_changed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/Add" to="." method="_on_add_autopauses_set_pressed"]

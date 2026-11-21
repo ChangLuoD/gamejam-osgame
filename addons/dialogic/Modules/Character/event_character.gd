@@ -1,0 +1,620 @@
+@tool
+class_name DialogicCharacterEvent
+extends DialogicEvent
+## 用于操作角色立绘的事件。
+
+enum Actions {JOIN, LEAVE, UPDATE}
+
+### 设置
+
+## 此事件的动作类型（JOIN/LEAVE/UPDATE）。见 [Actions]。
+@export var action :=  Actions.JOIN
+## 将要加入/离开/更新的角色。
+@export var character: DialogicCharacter = null
+## 对于加入/更新，这是要显示的角色立绘。
+## 在离开时不使用。
+## 若为空，则使用默认立绘。
+@export var portrait := ""
+## 此角色应移动到的位置索引
+@export var transform := "center"
+
+## 动画脚本的名称（需继承 DialogicAnimation）。
+## 在加入/离开时，空（默认）会回退到设置中配置的动画。
+## 在更新时，空表示不播放动画。
+@export var animation_name := ""
+## 动画的时长。
+@export var animation_length: float = 0.5
+## 动画重复的次数。仅用于更新事件。
+@export var animation_repeats: int = 1
+@export var repeat_forever: bool = false
+
+## 若为 true，事件会等待动画结束后再开始下一个事件。
+@export var animation_wait := false
+
+## 要使用的淡入淡出动画。若留空，将使用默认的交叉淡化动画与时长。
+@export var fade_animation := ""
+@export var fade_length := 0.5
+
+## 仅用于更新。若大于 0，立绘会在此时长（秒）内补间到
+## 新位置（若有变化）。
+@export var transform_time: float = 0.0
+@export var transform_ease := Tween.EaseType.EASE_IN_OUT
+@export var transform_trans := Tween.TransitionType.TRANS_SINE
+
+var ease_options := [
+		{'label': '缓入', 	 'value': Tween.EASE_IN},
+		{'label': '缓出', 	 'value': Tween.EASE_OUT},
+		{'label': '缓入缓出', 'value': Tween.EASE_IN_OUT},
+		{'label': '缓出缓入', 'value': Tween.EASE_OUT_IN},
+		]
+
+var trans_options := [
+		{'label': '线性', 	'value': Tween.TRANS_LINEAR},
+		{'label': '正弦', 		'value': Tween.TRANS_SINE},
+		{'label': '五次', 		'value': Tween.TRANS_QUINT},
+		{'label': '四次', 		'value': Tween.TRANS_QUART},
+		{'label': '二次', 		'value': Tween.TRANS_QUAD},
+		{'label': '指数', 		'value': Tween.TRANS_EXPO},
+		{'label': '弹性', 	'value': Tween.TRANS_ELASTIC},
+		{'label': '三次', 		'value': Tween.TRANS_CUBIC},
+		{'label': '圆形', 		'value': Tween.TRANS_CIRC},
+		{'label': '反弹', 	'value': Tween.TRANS_BOUNCE},
+		{'label': '回退', 		'value': Tween.TRANS_BACK},
+		{'label': '弹簧', 	'value': Tween.TRANS_SPRING}
+		]
+
+## 立绘应具有的 z_index。
+@export var z_index: int = 0
+## 若为 true，立绘将被设为镜像。
+@export var mirrored := false
+## 若设置，将传递给立绘场景。
+@export var extra_data := ""
+
+
+### 辅助
+
+## 标记某项是否需要更新（仅 UPDATE 模式）
+var set_portrait := false
+var set_transform := false
+var set_z_index := false
+var set_mirrored := false
+## 用于在唯一名称标识符和角色资源之间相互设置
+var character_identifier: String:
+	get:
+		if character_identifier == '--All--':
+			return '--All--'
+		elif character_identifier.begins_with("{"):
+			return character_identifier
+		if character:
+			var identifier := character.get_identifier()
+			if not identifier.is_empty():
+				return identifier
+		return character_identifier
+	set(value):
+		character_identifier = value
+		character = DialogicResourceUtil.get_character_resource(value)
+		if (not character) or (character and not character.portraits.has(portrait)):
+			portrait = ""
+			ui_update_needed.emit()
+
+var regex := RegEx.create_from_string(r'(?<type>join|update|leave)\s*(")?(?<name>(?(2)[^"\n]*|[^(: \n]*))(?(2)"|)(\W*\((?<portrait>.*)\))?(\s*(?<transform>[^\[]*))?(\s*\[(?<shortcode>.*)\])?')
+
+
+#region 执行
+################################################################################
+
+func _execute() -> void:
+	if character_identifier.begins_with("{"):
+		character = DialogicResourceUtil.get_character_resource(dialogic.Expressions.execute_string(character_identifier))
+		
+	if not character and not character_identifier == "--All--":
+		finish()
+		return
+
+	# 计算动画时长（跳过时可能被缩短）
+	var final_animation_length: float = animation_length
+	var final_position_move_time: float = transform_time
+	if dialogic.Inputs.auto_skip.enabled:
+		var max_time: float = dialogic.Inputs.auto_skip.time_per_event
+		final_animation_length = min(max_time, animation_length)
+		final_position_move_time = min(max_time, transform_time)
+	
+	if portrait.begins_with("{"):
+		portrait = str(dialogic.Expressions.execute_string(portrait))
+
+	# JOIN -------------------------------------
+	if action == Actions.JOIN:
+		if dialogic.has_subsystem('History') and !dialogic.Portraits.is_character_joined(character):
+			var character_name_text := dialogic.Text.get_character_name_parsed(character)
+			dialogic.History.store_simple_history_entry(character_name_text + " 加入了", event_name, {'character': character_name_text, 'mode':'Join'})
+
+		await dialogic.Portraits.join_character(
+			character, portrait, transform,
+			mirrored, z_index, extra_data,
+			animation_name, final_animation_length, animation_wait)
+
+	# LEAVE -------------------------------------
+	elif action == Actions.LEAVE:
+		if character_identifier == '--All--':
+			if dialogic.has_subsystem('History') and len(dialogic.Portraits.get_joined_characters()):
+				dialogic.History.store_simple_history_entry("所有人离开了", event_name, {'character': "All", 'mode':'Leave'})
+
+			await dialogic.Portraits.leave_all_characters(
+				animation_name,
+				final_animation_length,
+				animation_wait
+			)
+
+		elif character:
+			if dialogic.has_subsystem('History') and dialogic.Portraits.is_character_joined(character):
+				var character_name_text := dialogic.Text.get_character_name_parsed(character)
+				dialogic.History.store_simple_history_entry(character_name_text+" 离开了", event_name, {'character': character_name_text, 'mode':'Leave'})
+
+			await dialogic.Portraits.leave_character(
+				character,
+				animation_name,
+				final_animation_length,
+				animation_wait
+			)
+
+	# UPDATE -------------------------------------
+	elif action == Actions.UPDATE:
+		if not character or not dialogic.Portraits.is_character_joined(character):
+			finish()
+			return
+
+		if set_portrait:
+			await dialogic.Portraits.change_character_portrait(character, portrait, fade_animation, fade_length)
+
+		dialogic.Portraits.change_character_extradata(character, extra_data)
+
+		if set_mirrored:
+			dialogic.Portraits.change_character_mirror(character, mirrored)
+
+		if set_z_index:
+			dialogic.Portraits.change_character_z_index(character, z_index)
+
+		if set_transform:
+			dialogic.Portraits.move_character(character, transform, final_position_move_time, transform_ease, transform_trans)
+
+		if animation_name:
+			var final_animation_repetitions: int = animation_repeats
+
+			if dialogic.Inputs.auto_skip.enabled:
+				var time_per_event: float = dialogic.Inputs.auto_skip.time_per_event
+				var time_for_repetitions: float = time_per_event / animation_repeats
+				final_animation_length = time_for_repetitions
+
+			var animation := dialogic.Portraits.animate_character(
+				character,
+				animation_name,
+				final_animation_length,
+				final_animation_repetitions,
+				false,
+				repeat_forever
+			)
+
+			if animation_wait and not repeat_forever:
+				dialogic.current_state = DialogicGameHandler.States.ANIMATING
+				await animation.finished
+				dialogic.current_state = DialogicGameHandler.States.IDLE
+
+
+	finish()
+
+#endregion
+
+
+#region 初始化
+###############################################################################
+
+func _init() -> void:
+	event_name = "Character"
+	event_description = "允许让角色加入或离开，或更新其立绘、位置、镜像、Z 轴顺序或动画。"
+	set_default_color("Color2")
+	event_category = "Main"
+	event_sorting_index = 2
+	help_page_path = "https://docs.dialogic.pro/event-character.html"
+
+
+func _get_icon() -> Resource:
+	return load(self.get_script().get_path().get_base_dir().path_join("icon.svg"))
+
+#endregion
+
+
+#region 保存、加载、默认值
+################################################################################
+
+func to_text() -> String:
+	var result_string := ""
+
+	# 动作
+	match action:
+		Actions.JOIN: result_string += "join "
+		Actions.LEAVE: result_string += "leave "
+		Actions.UPDATE: result_string += "update "
+
+	var default_values := DialogicUtil.get_custom_event_defaults(event_name)
+
+	# 角色标识符
+	if action == Actions.LEAVE and character_identifier == "--All--":
+		result_string += "--All--"
+	if character or character_identifier.begins_with("{"):
+		if character:
+			var name := character.get_character_name()
+
+			if name.count(" ") > 0:
+				name = '"' + name + '"'
+
+			result_string += name
+		
+		else:
+			result_string += character_identifier
+		
+
+		# 立绘
+		if portrait.strip_edges() != default_values.get("portrait", ""):
+			if action != Actions.LEAVE and (action != Actions.UPDATE or set_portrait):
+				result_string += " (" + portrait + ")"
+
+	# 位置变换
+	if action == Actions.JOIN or (action == Actions.UPDATE and set_transform):
+		result_string += " " + str(transform)
+
+	# 设置项：
+	if action == Actions.JOIN or action == Actions.LEAVE:
+		set_mirrored = mirrored != default_values.get("mirrored", false)
+		set_z_index = z_index != default_values.get("z_index", 0)
+
+	var shortcode := store_to_shortcode_parameters()
+
+	if shortcode != "":
+		result_string += " [" + shortcode + "]"
+
+	return result_string
+
+
+func from_text(string:String) -> void:
+	# 加载默认角色
+	character = DialogicResourceUtil.get_character_resource(character_identifier)
+
+	var result := regex.search(string)
+
+	# 动作
+	match result.get_string("type"):
+		"join": action = Actions.JOIN
+		"leave": action = Actions.LEAVE
+		"update": action = Actions.UPDATE
+
+	# 角色
+	var given_name := result.get_string("name").strip_edges()
+	var given_portrait := result.get_string("portrait").strip_edges()
+	var given_transform := result.get_string("transform").strip_edges()
+
+	if given_name:
+		if action == Actions.LEAVE and given_name == "--All--":
+			character_identifier = '--All--'
+		if given_name.begins_with("{"):
+			character_identifier = given_name.strip_edges()
+		else:
+			character = DialogicResourceUtil.get_character_resource(given_name)
+
+	# 立绘
+	if given_portrait:
+		portrait = given_portrait.trim_prefix('(').trim_suffix(')')
+		set_portrait = true
+
+	# 位置变换
+	if given_transform:
+		transform = given_transform
+		set_transform = true
+
+	# 短代码
+	if not result.get_string('shortcode'):
+		return
+
+	load_from_shortcode_parameters(result.get_string('shortcode'))
+
+
+func get_shortcode_parameters() -> Dictionary:
+	return {
+		#参数名 		: 属性信息
+		"action" 		: {"property": "action", 					"default": 0, "custom_stored":true,
+							"suggestions": func(): return {'Join':
+										{'value':Actions.JOIN},
+										'Leave':{'value':Actions.LEAVE},
+										'Update':{'value':Actions.UPDATE}}},
+		"character" 	: {"property": "character_identifier",	"default": "", "custom_stored":true, "ext_file":true},
+		"portrait" 		: {"property": "portrait", 				"default": "", "custom_stored":true,},
+		"transform" 	: {"property": "transform", 			"default": "center", "custom_stored":true,},
+
+		"animation"		: {"property": "animation_name", 			"default": ""},
+		"length"		: {"property": "animation_length", 			"default": 0.5},
+		"wait" 			: {"property": "animation_wait", 			"default": false},
+		"repeat"		: {"property": "animation_repeats", 		"default": 1},
+		"repeat_forever"		: {"property": "repeat_forever", 		"default": false},
+
+		"z_index" 		: {"property": "z_index", 						"default": 0},
+		"mirrored"		: {"property": "mirrored", 						"default": false},
+		"fade"			: {"property": "fade_animation", 				"default":""},
+		"fade_length"	: {"property": "fade_length", 					"default":0.5},
+		"move_time"		: {"property": "transform_time", 				"default": 0.0},
+		"move_ease" 	: {"property": "transform_ease", 	"default": Tween.EaseType.EASE_IN_OUT,
+								"suggestions": func(): return list_to_suggestions(ease_options)},
+		"move_trans"	: {"property": "transform_trans", 	"default": Tween.TransitionType.TRANS_SINE,
+								"suggestions": func(): return list_to_suggestions(trans_options)},
+		"extra_data"	: {"property": "extra_data", 					"default": ""},
+	}
+
+
+func is_valid_event(string:String) -> bool:
+	if string.begins_with("join") or string.begins_with("leave") or string.begins_with("update"):
+		return true
+	return false
+
+#endregion
+
+
+#region 编辑器展示
+################################################################################
+
+func build_event_editor() -> void:
+	add_header_edit('action', ValueType.FIXED_OPTIONS, {
+		'options': [
+			{
+				'label': '加入',
+				'value': Actions.JOIN,
+				'icon': load("res://addons/dialogic/Editor/Images/Dropdown/join.svg")
+			},
+			{
+				'label': '离开',
+				'value': Actions.LEAVE,
+				'icon': load("res://addons/dialogic/Editor/Images/Dropdown/leave.svg")
+			},
+			{
+				'label': '更新',
+				'value': Actions.UPDATE,
+				'icon': load("res://addons/dialogic/Editor/Images/Dropdown/update.svg")
+			}
+		],
+		"tooltip": "切换动作：加入/离开/更新。"
+	})
+	add_header_edit('character_identifier', ValueType.DYNAMIC_OPTIONS,
+			{'placeholder'		: '角色',
+			'file_extension' 	: '.dch',
+			'mode'				: 2,
+			'suggestions_func' 	: get_character_suggestions,
+			'icon' 				: load("res://addons/dialogic/Editor/Images/Resources/character.svg"),
+			'autofocus'			: true})
+
+	add_header_edit('set_portrait', ValueType.BOOL_BUTTON,
+			{'icon':load("res://addons/dialogic/Modules/Character/update_portrait.svg"),
+			 'tooltip':'更改立绘'}, "should_show_portrait_selector() and action == Actions.UPDATE")
+	add_header_edit('portrait', ValueType.DYNAMIC_OPTIONS,
+			{'placeholder'		: '默认',
+			'collapse_when_empty':true,
+			'suggestions_func' 	: get_portrait_suggestions,
+			'icon' 				: load("res://addons/dialogic/Editor/Images/Resources/portrait.svg")},
+			'should_show_portrait_selector() and (action != Actions.UPDATE or set_portrait)')
+	add_header_edit('set_transform', ValueType.BOOL_BUTTON,
+			{'icon': load("res://addons/dialogic/Modules/Character/update_position.svg"), 'tooltip':'更改位置'}, "character != null and !has_no_portraits() and action == Actions.UPDATE")
+	add_header_label('位于', 'character != null and !has_no_portraits() and action == Actions.JOIN')
+	add_header_label('移动到', 'character != null and !has_no_portraits() and action == Actions.UPDATE and set_transform')
+	add_header_edit('transform', ValueType.DYNAMIC_OPTIONS,
+			{'placeholder'		: '居中',
+			'mode'				: 0,
+			'value_display'		: true,
+			'suggestions_func' 	: get_position_suggestions,
+			'tooltip'		: "你可以使用预设位置，或像 'pos=x0.5y1 size=x0.5y1 rot=10' 这样的自定义变换。\n在文档中了解更多。"},
+			'character != null and !has_no_portraits() and action != %s and (action != Actions.UPDATE or set_transform)' %Actions.LEAVE)
+
+	# 正文
+	add_body_edit('fade_animation', ValueType.DYNAMIC_OPTIONS,
+			{'left_text'		: '淡入淡出：',
+			'suggestions_func' 	: get_fade_suggestions,
+			'editor_icon' 			: ["Animation", "EditorIcons"],
+			'placeholder' 			: '默认',
+			'value_display'			: true,
+			'enable_pretty_name' 	: true,
+			'tooltip'				: "选择切换到其他立绘时使用的淡入淡出效果。"},
+			'should_show_fade_options()')
+	add_body_edit('fade_length', ValueType.NUMBER, {'left_text':'时长：', 'suffix':'s', "min":0},
+			'should_show_fade_options() and !fade_animation.is_empty()')
+	add_body_line_break("should_show_fade_options()")
+	add_body_edit('animation_name', ValueType.DYNAMIC_OPTIONS,
+			{'left_text'		: '动画：',
+			'suggestions_func' 	: get_animation_suggestions,
+			'editor_icon' 			: ["Animation", "EditorIcons"],
+			'placeholder' 			: '默认',
+			'value_display'			: true,
+			'enable_pretty_name' 	: true,
+			'tooltip'				: "在此角色上播放动画。"},
+			'should_show_animation_options()')
+	add_body_edit('animation_length', ValueType.NUMBER, {'left_text':'时长：', 'suffix':'s', "min":0},
+			'should_show_animation_options() and !animation_name.is_empty() and not "instant" in animation_name.to_lower()')
+	add_body_edit('repeat_forever', ValueType.BOOL, {'left_text':'永久重复：'},
+			'should_show_animation_options() and !animation_name.is_empty() and action == %s)' %Actions.UPDATE)
+	add_body_edit('animation_repeats', ValueType.NUMBER, {'left_text':'重复次数：', 'mode':1, "min":1},
+			'should_show_animation_options() and !animation_name.is_empty() and action == %s and not repeat_forever' %Actions.UPDATE)
+	add_body_edit('animation_wait', ValueType.BOOL, {'left_text':'等待结束：'},
+			'should_show_animation_options() and !animation_name.is_empty() and not repeat_forever and not "instant" in animation_name.to_lower()')
+	add_body_line_break()
+	add_body_edit('transform_time', ValueType.NUMBER, {'left_text':'移动时长：', "min":0, "tooltip": "改变角色位置时，移动的快慢由此决定。"},
+			"should_show_transform_options()")
+	add_body_edit("transform_trans", ValueType.FIXED_OPTIONS, {'options':trans_options, 'left_text':"过渡：", "tooltip":"把角色移动到新位置时使用的过渡类型。"}, 'should_show_transform_options() and transform_time > 0')
+	add_body_edit("transform_ease", ValueType.FIXED_OPTIONS, {'options':ease_options, 'left_text':"缓动：", "tooltip":"把角色移动到新位置时使用的缓动方式。"}, 'should_show_transform_options() and transform_time > 0')
+
+	add_body_edit('set_z_index', ValueType.BOOL_BUTTON, {'icon':load("res://addons/dialogic/Modules/Character/update_z_index.svg"), 'tooltip':'更改 Z 轴顺序'}, "character != null and action == Actions.UPDATE")
+	add_body_edit('z_index', ValueType.NUMBER, {'left_text':'Z 轴顺序：', 'mode':1, "tooltip": "Z 轴顺序控制角色的视觉层次。z-index 越高，角色看起来越靠前。"},
+			'action != %s and (action != Actions.UPDATE or set_z_index)' %Actions.LEAVE)
+	add_body_edit('set_mirrored', ValueType.BOOL_BUTTON, {'icon':load("res://addons/dialogic/Modules/Character/update_mirror.svg"), 'tooltip':'更改镜像'}, "character != null and action == Actions.UPDATE")
+	add_body_edit('mirrored', ValueType.BOOL, {'left_text':'镜像：', "tooltip": "镜像此角色。这会叠加在立绘与位置容器的镜像之上。"},
+			'action != %s and (action != Actions.UPDATE or set_mirrored)' %Actions.LEAVE)
+	add_body_edit('extra_data', ValueType.SINGLELINE_TEXT, {'left_text':'额外数据：', "tooltip": "传递给立绘的数据。用于自定义立绘场景。"}, 'action != Actions.LEAVE')
+
+
+func should_show_transform_options() -> bool:
+	return action == Actions.UPDATE and set_transform
+
+
+func should_show_animation_options() -> bool:
+	return (character and !character.portraits.is_empty()) or character_identifier == '--All--'
+
+
+func should_show_fade_options() -> bool:
+	return action == Actions.UPDATE and set_portrait and character and not character.portraits.is_empty()
+
+
+func should_show_portrait_selector() -> bool:
+	return ((character and len(character.portraits) > 1) or character_identifier.begins_with("{")) and action != Actions.LEAVE
+
+
+func has_no_portraits() -> bool:
+	return character and character.portraits.is_empty()
+
+
+func get_character_suggestions(search_text:String) -> Dictionary:
+	return DialogicUtil.get_character_suggestions(search_text, character, false, action == Actions.LEAVE, editor_node)
+
+
+func get_portrait_suggestions(search_text:String) -> Dictionary:
+	var empty_text := "不更改"
+	if action == Actions.JOIN:
+		empty_text = "默认"
+	
+	return DialogicUtil.get_portrait_suggestions(search_text, character, true, empty_text, character_identifier.begins_with("{"))
+
+
+func get_position_suggestions(search_text:String='') -> Dictionary:
+	return DialogicUtil.get_portrait_position_suggestions(search_text)
+
+
+func get_animation_suggestions(search_text:String='') -> Dictionary:
+	var DPAU := DialogicPortraitAnimationUtil
+	match action:
+		Actions.JOIN:
+			return DPAU.get_suggestions(search_text, animation_name, "默认", DPAU.AnimationType.IN)
+		Actions.LEAVE:
+			return DPAU.get_suggestions(search_text, animation_name, "默认", DPAU.AnimationType.OUT)
+		Actions.UPDATE:
+			return DPAU.get_suggestions(search_text, animation_name, "无", DPAU.AnimationType.ACTION)
+	return {}
+
+
+func get_fade_suggestions(search_text:String='') -> Dictionary:
+	return DialogicPortraitAnimationUtil.get_suggestions(search_text, fade_animation, "默认", DialogicPortraitAnimationUtil.AnimationType.CROSSFADE)
+
+#endregion
+
+
+#region 代码补全
+################################################################################
+
+func _get_code_completion(CodeCompletionHelper:Node, TextNode:TextEdit, line:String, _word:String, symbol:String) -> void:
+	var line_until_caret: String = CodeCompletionHelper.get_line_untill_caret(line)
+	if symbol == ' ' and line_until_caret.count(" ") == 1:
+		CodeCompletionHelper.suggest_characters(TextNode, CodeEdit.KIND_MEMBER, self)
+		if line.begins_with('leave'):
+			TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, 'All', '--All-- ', event_color, TextNode.get_theme_icon("GuiEllipsis", "EditorIcons"))
+
+	if symbol == '(':
+		var completion_character := regex.search(line).get_string('name')
+		CodeCompletionHelper.suggest_portraits(TextNode, completion_character)
+
+	elif not '[' in line_until_caret and symbol == ' ' and line_until_caret.split(" ", false).size() > 1:
+		if not line.begins_with("leave"):
+			if not line_until_caret.split(" ", false)[-1] in get_position_suggestions():
+				for position in get_position_suggestions():
+					TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, position, position+' ', TextNode.syntax_highlighter.normal_color)
+
+	# 短代码部分
+	if '[' in line_until_caret:
+		# 建议参数
+		if symbol == '[' or symbol == ' ' and line_until_caret.count('"')%2 == 0:# and (symbol == "[" or (symbol == " " and line_until_caret.rfind('="') < line_until_caret.rfind('"')-1)):
+			suggest_parameter("animation", line, TextNode)
+
+			if "animation=" in line:
+				for param in ["length", "wait"]:
+					suggest_parameter(param, line, TextNode)
+				if line.begins_with('update'):
+					suggest_parameter("repeat", line, TextNode)
+			if line.begins_with("update"):
+				for param in ["move_time", "move_trans", "move_ease", "fade"]:
+					suggest_parameter(param, line, TextNode)
+				if "fade=" in line_until_caret:
+					suggest_parameter("fade_length", line, TextNode)
+			if not line.begins_with('leave'):
+				for param in ["mirrored", "z_index", "extra_data"]:
+					suggest_parameter(param, line, TextNode)
+
+		# 建议取值
+		else:
+			var current_param: RegExMatch = CodeCompletionHelper.completion_shortcode_param_getter_regex.search(line)
+			if not current_param:
+				return
+
+			match current_param.get_string("param"):
+				"animation":
+					var animations := {}
+					if line.begins_with('join'):
+						animations = DialogicPortraitAnimationUtil.get_portrait_animations_filtered(DialogicPortraitAnimationUtil.AnimationType.IN)
+					elif line.begins_with('update'):
+						animations = DialogicPortraitAnimationUtil.get_portrait_animations_filtered(DialogicPortraitAnimationUtil.AnimationType.ACTION)
+					elif line.begins_with('leave'):
+						animations = DialogicPortraitAnimationUtil.get_portrait_animations_filtered(DialogicPortraitAnimationUtil.AnimationType.OUT)
+
+					for script: String  in animations:
+						TextNode.add_code_completion_option(CodeEdit.KIND_VARIABLE, DialogicUtil.pretty_name(script), DialogicUtil.pretty_name(script), TextNode.syntax_highlighter.normal_color, null, '" ')
+
+				"wait", "mirrored":
+					CodeCompletionHelper.suggest_bool(TextNode, TextNode.syntax_highlighter.normal_color)
+				"move_trans":
+					CodeCompletionHelper.suggest_custom_suggestions(list_to_suggestions(trans_options), TextNode, TextNode.syntax_highlighter.normal_color)
+				"move_ease":
+					CodeCompletionHelper.suggest_custom_suggestions(list_to_suggestions(ease_options), TextNode, TextNode.syntax_highlighter.normal_color)
+
+
+func suggest_parameter(parameter:String, line:String, TextNode:TextEdit) -> void:
+	if not parameter + "=" in line:
+		TextNode.add_code_completion_option(CodeEdit.KIND_MEMBER, parameter, parameter + '="', TextNode.syntax_highlighter.normal_color)
+
+
+func _get_start_code_completion(_CodeCompletionHelper:Node, TextNode:TextEdit) -> void:
+	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'join', 'join ', event_color, load('res://addons/dialogic/Editor/Images/Dropdown/join.svg'))
+	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'leave', 'leave ', event_color, load('res://addons/dialogic/Editor/Images/Dropdown/leave.svg'))
+	TextNode.add_code_completion_option(CodeEdit.KIND_PLAIN_TEXT, 'update', 'update ', event_color, load('res://addons/dialogic/Editor/Images/Dropdown/update.svg'))
+
+#endregion
+
+
+#region 语法高亮
+################################################################################
+
+func _get_syntax_highlighting(Highlighter:SyntaxHighlighter, dict:Dictionary, line:String) -> Dictionary:
+	var word := line.get_slice(' ', 0)
+
+	dict[line.find(word)] = {"color":event_color}
+	dict[line.find(word)+len(word)] = {"color":Highlighter.normal_color}
+	var result := regex.search(line)
+	if result.get_string('name'):
+		dict[result.get_start('name')] = {"color":event_color.lerp(Highlighter.normal_color, 0.5)}
+		dict[result.get_end('name')] = {"color":Highlighter.normal_color}
+	if result.get_string('portrait'):
+		dict[result.get_start('portrait')] = {"color":event_color.lerp(Highlighter.normal_color, 0.6)}
+		dict[result.get_end('portrait')] = {"color":Highlighter.normal_color}
+	if result.get_string('shortcode'):
+		dict = Highlighter.color_shortcode_content(dict, line, result.get_start('shortcode'), result.get_end('shortcode'), event_color)
+	return dict
+
+
+## 辅助函数
+func list_to_suggestions(list:Array) -> Dictionary:
+	return list.reduce(
+		func(accum, value):
+			accum[value.label] = value
+			accum[value.label]["text_alt"] = [value.label.to_lower()]
+			return accum,
+		{})
+
+#endregion

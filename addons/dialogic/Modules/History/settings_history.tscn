@@ -1,0 +1,164 @@
+[gd_scene format=3 uid="uid://b5yq6xh412ilm"]
+
+[ext_resource type="Script" uid="uid://cqfmftweedlvb" path="res://addons/dialogic/Modules/History/settings_history.gd" id="1_hbhst"]
+[ext_resource type="PackedScene" uid="uid://dbpkta2tjsqim" path="res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn" id="2_wefye"]
+
+[node name="History" type="PanelContainer" unique_id=952428499]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"DialogicPanelA"
+script = ExtResource("1_hbhst")
+
+[node name="HistoryOptions" type="VBoxContainer" parent="." unique_id=2055297773]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Title3" type="Label" parent="HistoryOptions" unique_id=783374425]
+layout_mode = 2
+theme_type_variation = &"DialogicSettingsSection"
+text = "简单历史记录"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HistoryOptions" unique_id=1585012650]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HistoryOptions/HBoxContainer" unique_id=769462865]
+layout_mode = 2
+text = "启用"
+
+[node name="HintTooltip" parent="HistoryOptions/HBoxContainer" unique_id=1847977316 instance=ExtResource("2_wefye")]
+layout_mode = 2
+tooltip_text = "启用后，部分事件（文本、加入、离开、选项）会记录日志。
+另外，默认布局会提供日志面板选项。"
+texture = null
+hint_text = "启用后，部分事件（文本、加入、离开、选项）会记录日志。
+另外，默认布局会提供日志面板选项。"
+
+[node name="SimpleHistoryEnabled" type="CheckBox" parent="HistoryOptions/HBoxContainer" unique_id=1276761635]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="HistoryOptions" unique_id=1183917308]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HistoryOptions/HBoxContainer2" unique_id=126603663]
+layout_mode = 2
+text = "保存与读取"
+
+[node name="HintTooltip" parent="HistoryOptions/HBoxContainer2" unique_id=1352132231 instance=ExtResource("2_wefye")]
+layout_mode = 2
+tooltip_text = "启用后，简单历史记录会包含在存档中。"
+texture = null
+hint_text = "启用后，简单历史记录会包含在存档中。另外，在调用 Dialogic.clear(FULL_CLEAR) 时它会被重置。"
+
+[node name="SimpleHistorySave" type="CheckBox" parent="HistoryOptions/HBoxContainer2" unique_id=187275574]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Title" type="Label" parent="HistoryOptions" unique_id=1597854900]
+layout_mode = 2
+theme_type_variation = &"DialogicSettingsSection"
+text = "完整历史记录"
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="HistoryOptions" unique_id=81666071]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HistoryOptions/HBoxContainer5" unique_id=5856574]
+layout_mode = 2
+text = "启用"
+
+[node name="HintTooltip" parent="HistoryOptions/HBoxContainer5" unique_id=1281851755 instance=ExtResource("2_wefye")]
+layout_mode = 2
+tooltip_text = "启用后，会保存每个事件的副本。"
+texture = null
+hint_text = "启用后，会保存每个事件的副本。"
+
+[node name="FullHistoryEnabled" type="CheckBox" parent="HistoryOptions/HBoxContainer5" unique_id=107534039]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="HistoryOptions" unique_id=756332783]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HistoryOptions/HBoxContainer6" unique_id=16583341]
+layout_mode = 2
+text = "保存与读取"
+
+[node name="HintTooltip" parent="HistoryOptions/HBoxContainer6" unique_id=640025918 instance=ExtResource("2_wefye")]
+layout_mode = 2
+tooltip_text = "启用后，完整历史记录会包含在存档中。"
+texture = null
+hint_text = "启用后，完整历史记录会包含在存档中。另外，在调用 Dialogic.clear(FULL_CLEAR) 时它会被重置。"
+
+[node name="FullHistorySave" type="CheckBox" parent="HistoryOptions/HBoxContainer6" unique_id=479886133]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Title2" type="Label" parent="HistoryOptions" unique_id=2138699017]
+layout_mode = 2
+theme_type_variation = &"DialogicSettingsSection"
+text = "已见事件历史记录"
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="HistoryOptions" unique_id=1505592697]
+layout_mode = 2
+
+[node name="EnabledLabel" type="Label" parent="HistoryOptions/HBoxContainer4" unique_id=28061128]
+layout_mode = 2
+text = "启用"
+
+[node name="HintTooltip" parent="HistoryOptions/HBoxContainer4" unique_id=2113595776 instance=ExtResource("2_wefye")]
+layout_mode = 2
+tooltip_text = "记录时间线中的事件是否已经遇到过。
+启用后会发出信号 \"Dialogic.History.visited_event\" 与 \"Dialogic.History.unvisited_event\"。
+"
+texture = null
+hint_text = "记录时间线中的事件是否已经遇到过。
+启用后会发出信号 \"Dialogic.History.visited_event\" 与 \"Dialogic.History.unvisited_event\"。
+"
+
+[node name="AlreadyReadHistoryEnabled" type="CheckBox" parent="HistoryOptions/HBoxContainer4" unique_id=605031237]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HBoxContainerSaveOnAutoSave" type="HBoxContainer" parent="HistoryOptions" unique_id=763122047]
+layout_mode = 2
+
+[node name="EnabledLabel" type="Label" parent="HistoryOptions/HBoxContainerSaveOnAutoSave" unique_id=1457253224]
+layout_mode = 2
+text = "自动保存信号时保存"
+
+[node name="HintTooltip" parent="HistoryOptions/HBoxContainerSaveOnAutoSave" unique_id=440281328 instance=ExtResource("2_wefye")]
+layout_mode = 2
+tooltip_text = "发生自动保存时，把已见历史记录存入全局存档文件。
+自动保存属于保存设置的一部分。"
+texture = null
+hint_text = "发生自动保存时，把已见历史记录存入全局存档文件。
+自动保存属于保存设置的一部分。"
+
+[node name="SaveOnAutoSaveToggle" type="CheckBox" parent="HistoryOptions/HBoxContainerSaveOnAutoSave" unique_id=758050524]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HBoxContainerSaveOnSave" type="HBoxContainer" parent="HistoryOptions" unique_id=783219692]
+layout_mode = 2
+
+[node name="EnabledLabel" type="Label" parent="HistoryOptions/HBoxContainerSaveOnSave" unique_id=1152698259]
+layout_mode = 2
+text = "保存信号时保存"
+
+[node name="HintTooltip" parent="HistoryOptions/HBoxContainerSaveOnSave" unique_id=382794999 instance=ExtResource("2_wefye")]
+layout_mode = 2
+tooltip_text = "发生普通保存时，把已见历史记录存入全局存档文件。
+这可以通过 Dialogic.Save.save 方法完成。
+此设置会忽略自动保存。"
+texture = null
+hint_text = "发生普通保存时，把已见历史记录存入全局存档文件。
+这可以通过 Dialogic.Save.save 方法完成。
+此设置会忽略自动保存。"
+
+[node name="SaveOnSaveToggle" type="CheckBox" parent="HistoryOptions/HBoxContainerSaveOnSave" unique_id=302791018]
+unique_name_in_owner = true
+layout_mode = 2

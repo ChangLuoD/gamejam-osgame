@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://jxvhnb5koli6"]
+
+[ext_resource type="Script" uid="uid://b14qaol6e8h7g" path="res://autoloads/system/audio_manager/audio_manager.gd" id="1_64ein"]
+[ext_resource type="Script" uid="uid://tr4eppti4vq5" path="res://autoloads/system/audio_manager/music_player.gd" id="2_nt6s8"]
+[ext_resource type="Script" uid="uid://b7av8nit7cjas" path="res://autoloads/system/audio_manager/se_player.gd" id="3_28ys4"]
+
+[node name="AudioManager" type="Node" unique_id=1138177998]
+script = ExtResource("1_64ein")
+
+[node name="MusicPlayer" type="Node" parent="." unique_id=1377504581]
+unique_name_in_owner = true
+script = ExtResource("2_nt6s8")
+
+[node name="SePlayer" type="Node" parent="." unique_id=2035770055]
+unique_name_in_owner = true
+script = ExtResource("3_28ys4")

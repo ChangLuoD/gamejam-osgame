@@ -1,0 +1,48 @@
+[gd_scene format=3 uid="uid://1ctcs6ywjjtd"]
+
+[ext_resource type="PackedScene" uid="uid://dbpkta2tjsqim" path="res://addons/dialogic/Editor/Common/hint_tooltip_icon.tscn" id="1_o3alv"]
+[ext_resource type="Script" uid="uid://i1ujoar8jf80" path="res://addons/dialogic/Editor/CharacterEditor/character_prefix_suffix.gd" id="1_tkxff"]
+
+[node name="CharacterPrefixSuffix" type="GridContainer" unique_id=287605847 node_paths=PackedStringArray("prefix_input", "suffix_input")]
+offset_right = 121.0
+offset_bottom = 66.0
+columns = 2
+script = ExtResource("1_tkxff")
+prefix_input = NodePath("PrefixInput")
+suffix_input = NodePath("SuffixInput")
+
+[node name="Prefix" type="HBoxContainer" parent="." unique_id=609352699]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Prefix" unique_id=1105211687]
+layout_mode = 2
+text = "前缀"
+
+[node name="HintTooltip" parent="Prefix" unique_id=655200502 instance=ExtResource("1_o3alv")]
+layout_mode = 2
+texture = null
+hint_text = "角色说话时，此内容会出现在其文本之前。
+例如：颜色标签或引号。"
+
+[node name="PrefixInput" type="LineEdit" parent="." unique_id=320864132]
+layout_mode = 2
+size_flags_horizontal = 3
+caret_blink = true
+
+[node name="Suffix" type="HBoxContainer" parent="." unique_id=928714275]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Suffix" unique_id=819417778]
+layout_mode = 2
+text = "后缀"
+
+[node name="HintTooltip" parent="Suffix" unique_id=223203337 instance=ExtResource("1_o3alv")]
+layout_mode = 2
+texture = null
+hint_text = "角色说话时，此内容会出现在其文本之后。
+例如：颜色标签或引号。"
+
+[node name="SuffixInput" type="LineEdit" parent="." unique_id=1270809658]
+layout_mode = 2
+size_flags_horizontal = 3
+caret_blink = true

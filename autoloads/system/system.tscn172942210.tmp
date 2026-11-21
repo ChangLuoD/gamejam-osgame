@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://di5i2yvw0l8gr"]
+
+[ext_resource type="Script" uid="uid://dctgqiffj38jw" path="res://autoloads/system/system.gd" id="1_mme5f"]
+[ext_resource type="PackedScene" uid="uid://jxvhnb5koli6" path="res://autoloads/system/audio_manager/audio_manager.tscn" id="2_maroo"]
+[ext_resource type="PackedScene" uid="uid://d00kijlw71vl0" path="res://autoloads/system/setting_manager/setting_manager.tscn" id="3_maroo"]
+
+[node name="System" type="Node" unique_id=1393109694]
+script = ExtResource("1_mme5f")
+
+[node name="AudioManager" parent="." unique_id=1138177998 instance=ExtResource("2_maroo")]
+unique_name_in_owner = true
+
+[node name="SettingManager" parent="." unique_id=2089820188 instance=ExtResource("3_maroo")]
+unique_name_in_owner = true
+debug_print = false
